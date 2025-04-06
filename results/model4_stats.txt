@@ -1,0 +1,19 @@
+=== Model 4 (Haar+AdaBoost) Metrics ===
+
+Classification Report:
+              precision    recall  f1-score   support
+
+        Fake       0.99      0.99      0.99       143
+        Real       0.98      0.99      0.99       115
+
+    accuracy                           0.99       258
+   macro avg       0.99      0.99      0.99       258
+weighted avg       0.99      0.99      0.99       258
+
+Confusion Matrix:
+[[141   2]
+ [  1 114]]
+
+Inference time (sec/image): 0.000033
+Model size on disk (MB): 0.05
+Number of parameters (est): 42400

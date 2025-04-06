@@ -1,0 +1,19 @@
+=== Model 2 (HistEq + Aug CNN) Metrics ===
+
+Classification Report:
+              precision    recall  f1-score   support
+
+        Fake       1.00      0.97      0.99       143
+        Real       0.97      1.00      0.98       115
+
+    accuracy                           0.98       258
+   macro avg       0.98      0.99      0.98       258
+weighted avg       0.99      0.98      0.98       258
+
+Confusion Matrix:
+[[139   4]
+ [  0 115]]
+
+Inference time (sec/image): 0.002950
+Model size on disk (MB): 16.08
+Number of parameters: 4213825
