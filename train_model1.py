@@ -9,6 +9,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, classification_report
 import matplotlib.pyplot as plt
 
+# Configuration parameters
 IMG_SIZE = 128
 BATCH_SIZE = 32
 EPOCHS = 10
@@ -17,7 +18,8 @@ RESULTS_DIR = "results"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 class MyDataset(Dataset):
-    def __init__(self, fonelder, transform=None):
+    """Dataset class for loading real and fake face images"""
+    def __init__(self, folder, transform=None):
         self.paths = []
         self.labels = []
         for cls, label in [("Fake", 0), ("Real", 1)]:
@@ -39,12 +41,14 @@ class MyDataset(Dataset):
         label = self.labels[idx]
         return img, label
 
+# Simple transformation pipeline: resize and convert to tensor
 transform = T.Compose([
     T.ToPILImage(),
     T.Resize((IMG_SIZE, IMG_SIZE)),
     T.ToTensor()
 ])
 
+# Create dataset and split into train/test
 dataset = MyDataset(DATA_DIR, transform)
 train_size = int(0.8 * len(dataset))
 test_size = len(dataset) - train_size
@@ -54,6 +58,7 @@ train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = DataLoader(test_ds, batch_size=BATCH_SIZE, shuffle=False)
 
 class SimpleCNN(nn.Module):
+    """Simple CNN architecture with two convolutional layers"""
     def __init__(self):
         super(SimpleCNN, self).__init__()
         self.conv1 = nn.Conv2d(3, 32, 3, 1, 1)
@@ -65,11 +70,12 @@ class SimpleCNN(nn.Module):
     def forward(self, x):
         x = self.pool(nn.functional.relu(self.conv1(x)))
         x = self.pool(nn.functional.relu(self.conv2(x)))
-        x = x.view(x.size(0), -1)
+        x = x.view(x.size(0), -1)  # Flatten
         x = nn.functional.relu(self.fc1(x))
         x = self.fc2(x)
         return x
 
+# Set device and initialize model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = SimpleCNN().to(device)
 
@@ -109,11 +115,11 @@ with torch.no_grad():
         labels = labels.to(device)
         outputs = model(imgs)
 
-        # prob_real in [0,1]
+        # Convert to probabilities (0-1 range)
         prob_real = torch.sigmoid(outputs).squeeze()
         prob_fake = 1.0 - prob_real
 
-        # FIX: now ensure if prob_fake >=0.5 => preds=0 (Fake), else 1 (Real)
+        # If prob_fake >= 0.5 => prediction is 0 (Fake), otherwise 1 (Real)
         preds = torch.where(
             prob_fake >= 0.5,
             torch.zeros_like(prob_fake).long(),
@@ -128,10 +134,10 @@ num_images = len(test_ds)
 total_time = end_time - start_time
 inference_time_per_image = total_time / num_images
 
+# Generate and visualize confusion matrix
 cm = confusion_matrix(all_targets, all_preds)
 cr = classification_report(all_targets, all_preds, target_names=["Fake","Real"])
 
-# Save confusion matrix
 plt.figure()
 plt.imshow(cm, cmap='Blues')
 plt.title("Model 1 Confusion Matrix")
@@ -145,10 +151,12 @@ cm_path = os.path.join(RESULTS_DIR, "model1_confmat.png")
 plt.savefig(cm_path)
 plt.close()
 
+# Calculate model statistics
 model_size_bytes = os.path.getsize(MODEL1_PATH)
 model_size_mb = model_size_bytes / (1024*1024)
 num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
+# Save statistics to file
 stats_path = os.path.join(RESULTS_DIR, "model1_stats.txt")
 with open(stats_path, "w") as f:
     f.write("=== Model 1 (Baseline CNN) Metrics ===\n\n")

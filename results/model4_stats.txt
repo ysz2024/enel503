@@ -3,17 +3,17 @@
 Classification Report:
               precision    recall  f1-score   support
 
-        Fake       0.99      0.99      0.99       143
-        Real       0.98      0.99      0.99       115
+        Fake       0.69      0.70      0.70      2019
+        Real       0.69      0.69      0.69      1981
 
-    accuracy                           0.99       258
-   macro avg       0.99      0.99      0.99       258
-weighted avg       0.99      0.99      0.99       258
+    accuracy                           0.69      4000
+   macro avg       0.69      0.69      0.69      4000
+weighted avg       0.69      0.69      0.69      4000
 
 Confusion Matrix:
-[[141   2]
- [  1 114]]
+[[1417  602]
+ [ 623 1358]]
 
-Inference time (sec/image): 0.000033
+Inference time (sec/image): 0.000035
 Model size on disk (MB): 0.05
 Number of parameters (est): 42400

@@ -1,19 +1,22 @@
-=== Model 2 (HistEq + Aug CNN) Metrics ===
+=== Model 2 (Improved CNN with Focus on Fake Detection) ===
 
 Classification Report:
               precision    recall  f1-score   support
 
-        Fake       1.00      0.97      0.99       143
-        Real       0.97      1.00      0.98       115
+        Fake       0.99      0.95      0.97      2027
+        Real       0.95      0.99      0.97      1973
 
-    accuracy                           0.98       258
-   macro avg       0.98      0.99      0.98       258
-weighted avg       0.99      0.98      0.98       258
+    accuracy                           0.97      4000
+   macro avg       0.97      0.97      0.97      4000
+weighted avg       0.97      0.97      0.97      4000
 
 Confusion Matrix:
-[[139   4]
- [  0 115]]
+[[1934   93]
+ [  25 1948]]
 
-Inference time (sec/image): 0.002950
+Inference time (sec/image): 0.003360
 Model size on disk (MB): 16.08
 Number of parameters: 4213825
+Average confidence for fake images: 0.9400
+Average confidence for real images: 0.9727
+Using adjusted threshold for fake detection: 0.45

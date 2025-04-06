@@ -1,19 +1,27 @@
-=== Model 3 (SIFT+SVM) Metrics ===
+=== Model 3 (Enhanced SIFT+HOG+SVM) Metrics ===
+
+Configuration:
+- SIFT Keypoints: 75
+- PCA Components: 500
+- Variance Retained: 0.4288
+- Feature Types: SIFT + HOG
+- Class Weights: Fake=1.0, Real=1.2
 
 Classification Report:
               precision    recall  f1-score   support
 
-        Fake       0.68      0.73      0.70       143
-        Real       0.63      0.57      0.60       115
+        Fake       0.79      0.75      0.77      2000
+        Real       0.76      0.80      0.78      2000
 
-    accuracy                           0.66       258
-   macro avg       0.65      0.65      0.65       258
-weighted avg       0.66      0.66      0.66       258
+    accuracy                           0.77      4000
+   macro avg       0.77      0.77      0.77      4000
+weighted avg       0.77      0.77      0.77      4000
 
 Confusion Matrix:
-[[104  39]
- [ 49  66]]
+[[1495  505]
+ [ 403 1597]]
 
-Inference time (sec/image): 0.001510
-Model size on disk (MB): 85.17
-Number of parameters (SVM coef size): 12800
+Training time (seconds): 1.06
+Inference time (sec/image): 0.021453
+Model size on disk (MB): 34.24
+Number of parameters: 8850500
